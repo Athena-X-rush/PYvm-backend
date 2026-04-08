@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class TokenType(Enum):
     IDENTIFIER = 'IDENTIFIER'
     NUMBER = 'NUMBER'
@@ -23,6 +24,7 @@ class TokenType(Enum):
     GREATER = 'GREATER'
     NEWLINE = 'NEWLINE'
     EOF = 'EOF'
+
 
 class Lexer:
     def __init__(self, code):
@@ -70,12 +72,12 @@ class Lexer:
         return result
 
     def read_string(self):
-        self.advance()  # skip opening quote
+        self.advance()
         result = ''
         while self.current_char and self.current_char != '"':
             result += self.current_char
             self.advance()
-        self.advance()  # skip closing quote
+        self.advance()
         return result
 
     def get_next_token(self):

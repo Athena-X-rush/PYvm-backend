@@ -1,34 +1,42 @@
 from dataclasses import dataclass
 from typing import List, Optional
+
 import lexer
+
 
 @dataclass
 class ASTNode:
     pass
 
+
 @dataclass
 class Program(ASTNode):
     statements: List[ASTNode]
+
 
 @dataclass
 class Assign(ASTNode):
     name: str
     value: ASTNode
 
+
 @dataclass
 class Print(ASTNode):
     args: List[ASTNode]
+
 
 @dataclass
 class Input(ASTNode):
     prompt: ASTNode
 
+
 @dataclass
 class If(ASTNode):
     condition: ASTNode
     body: List[ASTNode]
-    elif_branches: List[tuple]  # list of (condition, body)
+    elif_branches: List[tuple]
     else_body: Optional[List[ASTNode]]
+
 
 @dataclass
 class BinOp(ASTNode):
@@ -36,17 +44,21 @@ class BinOp(ASTNode):
     op: str
     right: ASTNode
 
+
 @dataclass
 class Number(ASTNode):
     value: int
+
 
 @dataclass
 class String(ASTNode):
     value: str
 
+
 @dataclass
 class Identifier(ASTNode):
     name: str
+
 
 class Parser:
     def __init__(self, lexer):
@@ -114,12 +126,11 @@ class Parser:
                 args = []
                 if self.current_token != 'RPAREN':
                     args.append(self.expression())
-                    while self.current_token == 'COMMA':
-                        self.current_token = self.lexer.get_next_token()
-                        self.current_token_value = self.lexer.current_token_value
-                        args.append(self.expression())
+                while self.current_token == 'COMMA':
+                    self.current_token = self.lexer.get_next_token()
+                    self.current_token_value = self.lexer.current_token_value
+                    args.append(self.expression())
                 if self.current_token != 'RPAREN':
-                    print(f"DEBUG: Expected RPAREN but got {self.current_token} with value {self.current_token_value}")
                     raise ValueError("Expected )")
                 self.current_token = self.lexer.get_next_token()
                 self.current_token_value = self.lexer.current_token_value
@@ -134,7 +145,7 @@ class Parser:
         return None
 
     def if_statement(self):
-        self.current_token = self.lexer.get_next_token()  # skip IF
+        self.current_token = self.lexer.get_next_token()
         self.current_token_value = self.lexer.current_token_value
         condition = self.expression()
         if self.current_token != 'COLON':

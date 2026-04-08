@@ -1,4 +1,5 @@
-from parser import ASTNode, Program, Assign, Print, Input, If, BinOp, Number, String, Identifier
+from parser import Assign, BinOp, Identifier, If, Input, Number, Print, Program, String
+
 
 class Interpreter:
     def __init__(self, input_callback=None):
